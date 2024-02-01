@@ -46,6 +46,7 @@ jobs:
           # working-directory: ./cordova
           run: |
             npm install
+            npm run prebuild:electron
             cd cordova
             npm install
 
@@ -53,7 +54,6 @@ jobs:
           if: matrix.os == 'ubuntu-latest'
           # working-directory: ./cordova
           run: |
-            cd cordova
             npm run install:android
             npm run build:android
 
@@ -61,7 +61,6 @@ jobs:
           if: matrix.os == 'macos-latest'
           # working-directory: ./cordova
           run: |
-            cd cordova
             npm run install:ios
             npm run build:ios
 
