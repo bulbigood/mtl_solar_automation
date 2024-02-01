@@ -45,8 +45,9 @@ jobs:
         - name: Setup
           # working-directory: ./cordova
           run: |
+            npm install
             cd cordova
-            npm ci
+            npm install
 
         - name: Build (Android)
           if: matrix.os == 'ubuntu-latest'
@@ -58,7 +59,7 @@ jobs:
 
         - name: Build (iOS)
           if: matrix.os == 'macos-latest'
-          working-directory: ./cordova
+          # working-directory: ./cordova
           run: |
             cd cordova
             npm run install:ios
