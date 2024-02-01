@@ -26,12 +26,12 @@ jobs:
         fail-fast: false
 
         matrix:
-          os: [ ubuntu-latest, macos-latest ]
+          os: [ macos-latest, macos-latest ]
           include:
-            - os: ubuntu-latest
-              script: "build:linux"
             - os: macos-latest
-              script: "build:mac"
+              platform: "android"
+            - os: macos-latest
+              platform: "ios"
 
       runs-on: ${{ matrix.os }}
       steps:
@@ -51,7 +51,7 @@ jobs:
             npm install
 
         - name: Build (Android)
-          if: matrix.os == 'ubuntu-latest'
+          if: matrix.platform == 'android'
           # working-directory: ./cordova
           run: |
             cd cordova
@@ -59,7 +59,7 @@ jobs:
             npm run build:android
 
         - name: Build (iOS)
-          if: matrix.os == 'macos-latest'
+          if: matrix.platform == 'ios'
           # working-directory: ./cordova
           run: |
             cd cordova
