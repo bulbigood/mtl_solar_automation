@@ -48,12 +48,14 @@ jobs:
 
         - name: Build (Android)
           if: matrix.os == 'ubuntu-latest'
+          working-directory: ./cordova
           run: |
             npm run install:android
             npm run build:android
 
         - name: Build (iOS)
           if: matrix.os == 'ubuntu-latest'
+          working-directory: ./cordova
           run: |
             npm run install:ios
             npm run build:ios
