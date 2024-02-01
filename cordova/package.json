@@ -1,8 +1,8 @@
 {
-  "name": "org.montelibero.solar",
+  "name": "io.solarwallet",
   "version": "0.0.0",
   "private": true,
-  "displayName": "MTL Solar Wallet",
+  "displayName": "Solar",
   "cordova": {
     "platforms": [
       "ios",
