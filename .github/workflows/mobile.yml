@@ -26,14 +26,9 @@ jobs:
         fail-fast: false
 
         matrix:
-          os: [ macos-latest, macos-latest ]
-          include:
-            - os: macos-latest
-              platform: "android"
-            - os: macos-latest
-              platform: "ios"
+          platform: [ android, ios ]
 
-      runs-on: ${{ matrix.os }}
+      runs-on: macos-latest
       steps:
         - uses: actions/checkout@v4
 
