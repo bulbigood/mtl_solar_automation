@@ -62,6 +62,16 @@ jobs:
             echo y | sdkmanager --licenses
             sdkmanager --list
 
+        - name: Set up Android SDK
+          run: |
+            wget https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip
+            mkdir -p $HOME/sdk/cmdline-tools
+            unzip commandlinetools-linux-7302050_latest.zip -d $HOME/sdk/cmdline-tools
+            echo "y" | $HOME/sdk/cmdline-tools/cmdline-tools/bin/sdkmanager --sdk_root=$HOME/sdk "platform-tools" "platforms;android-30" "build-tools;30.0.3"
+
+        - name: Grant execute permission for gradlew
+          run: chmod +x gradlew
+
         - name: Setup
           run: |
             npm install
