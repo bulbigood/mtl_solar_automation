@@ -58,7 +58,8 @@ jobs:
           uses: actions/upload-artifact@v2
           with:
             name: app-debug.apk
-            path: mtl_solar/mtl_solar/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+            # path: mtl_solar/mtl_solar/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+            path: ./**/android/app/build/outputs/apk/debug/app-debug.apk
 
         - name: Build (iOS)
           if: matrix.platform == 'ios'
@@ -73,7 +74,7 @@ jobs:
           uses: actions/upload-artifact@v2
           with:
             name: Solar.app
-            path: mtl_solar/mtl_solar/cordova/platforms/ios/build/emulator/Solar.app
+            path: ./**/ios/build/emulator/Solar.app
 
         # - name: Test
         #   run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
