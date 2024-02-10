@@ -74,7 +74,7 @@ jobs:
 
         - name: Move file to workspace root
           if: matrix.platform == 'android'
-          run: mv ./**/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk ./app-debug.apk
+          run: mv /Users/runner/work/mtl_solar/mtl_solar/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk ./app-debug.apk
 
         - name: Upload build artifact
           if: matrix.platform == 'android'
@@ -93,7 +93,7 @@ jobs:
 
         - name: Move file to workspace root
           if: matrix.platform == 'ios'
-          run: mv ./**/ios/build/emulator/Solar.app ./Solar.app
+          run: mv /Users/runner/work/mtl_solar/mtl_solar/cordova/platforms/ios/build/emulator/Solar.app ./Solar.app
 
         - name: Upload build artifact
           if: matrix.platform == 'ios'
