@@ -4,30 +4,7 @@ on:
   workflow_dispatch: # Only manually triggered for this build.
 
 jobs:
-  build:
-    name: Build mobile wallet (artifacts)
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: get version
-        run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
-
-  build-app:
-      strategy:
-        fail-fast: false
-
-        matrix:
-          platform: [ android, ios ]
-
+  build-ios:
       runs-on: macos-latest
       steps:
         - uses: actions/checkout@v4
@@ -37,27 +14,55 @@ jobs:
           with:
             node-version: 20
 
+        - name: Setup
+          run: |
+            npm install
+            npm run prebuild:electron
+            cd cordova
+            npm install
+
+        - name: Build (iOS)
+          run: |
+            cd cordova
+            npm run install:ios
+            npm run build:ios
+
+        - name: Move file to workspace root
+          run: mv /Users/runner/work/mtl_solar/mtl_solar/cordova/platforms/ios/build/emulator/Solar.app ./Solar.app
+
+        - name: Upload build artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: Solar.app
+            path: ./Solar.app
+
+  build-android:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+
+        - name: setup node
+          uses: actions/setup-node@v4
+          with:
+            node-version: 20
+
         - name: Set up JDK 1.8
-          if: matrix.platform == 'android'
           uses: actions/setup-java@v1
           with:
             java-version: 1.8
 
         - name: Install Android build tools
-          if: matrix.platform == 'android'
           uses: android-actions/setup-android@v2
           with:
             api-level: 30
             build-tools-version: 30.0.3
 
         - name: Check Android SDK setup
-          if: matrix.platform == 'android'
           run: |
             echo y | sdkmanager --licenses
             sdkmanager --list
 
         - name: Setup
-          # working-directory: ./cordova
           run: |
             npm install
             npm run prebuild:electron
@@ -65,48 +70,16 @@ jobs:
             npm install
 
         - name: Build (Android)
-          if: matrix.platform == 'android'
-          # working-directory: ./cordova
           run: |
             cd cordova
             npm run install:android
             npm run build:android
 
         - name: Move file to workspace root
-          if: matrix.platform == 'android'
           run: mv /Users/runner/work/mtl_solar/mtl_solar/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk ./app-debug.apk
 
         - name: Upload build artifact
-          if: matrix.platform == 'android'
           uses: actions/upload-artifact@v2
           with:
             name: app-debug.apk
             path: ./app-debug.apk
-
-        - name: Build (iOS)
-          if: matrix.platform == 'ios'
-          # working-directory: ./cordova
-          run: |
-            cd cordova
-            npm run install:ios
-            npm run build:ios
-
-        - name: Move file to workspace root
-          if: matrix.platform == 'ios'
-          run: mv /Users/runner/work/mtl_solar/mtl_solar/cordova/platforms/ios/build/emulator/Solar.app ./Solar.app
-
-        - name: Upload build artifact
-          if: matrix.platform == 'ios'
-          uses: actions/upload-artifact@v2
-          with:
-            name: Solar.app
-            path: ./Solar.app
-
-        # - name: Test
-        #   run: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
-        #   continue-on-error: true
-
-        # - name: Build and Publish
-        #   run: npm run ${{matrix.script}}
-        #   env:
-        #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
