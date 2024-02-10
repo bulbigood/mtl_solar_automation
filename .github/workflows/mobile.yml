@@ -56,9 +56,10 @@ jobs:
           uses: android-actions/setup-android@v3
           with:
             cmdline-tools-version: 11076708
+            packages: ''
 
         - name: Install Android SDK packages
-          run: sdkmanager "platforms;android-30" "build-tools;30.0.3"
+          run: sdkmanager "build-tools;30.0.3"
 
         - name: Check Android SDK setup
           run: |
@@ -67,13 +68,11 @@ jobs:
         - name: Setup
           run: |
             npm install
-            npm run prebuild:electron
-            cd cordova
-            npm install
 
         - name: Build (Android)
           run: |
             cd cordova
+            npm install
             npm run install:android
             npm run build:android
 
