@@ -61,17 +61,14 @@ jobs:
         - name: Install Android SDK packages
           run: sdkmanager "build-tools;30.0.3"
 
-        - name: Check Android SDK setup
-          run: |
-            sdkmanager --list --verbose
-
-        - name: Setup
+        - name: Install project
           run: |
             npm install
 
-        - name: Build (Android)
+        - name: Build project (Android)
           run: |
             cd cordova
+            ls -al
             npm install
             npm run install:android
             npm run build:android
@@ -79,7 +76,7 @@ jobs:
         - name: Move file to workspace root
           run: mv /Users/runner/work/mtl_solar/mtl_solar/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk ./app-debug.apk
 
-        - name: Upload build artifact
+        - name: Upload build artifact (Android)
           uses: actions/upload-artifact@v2
           with:
             name: app-debug.apk
