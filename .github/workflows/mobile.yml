@@ -55,14 +55,14 @@ jobs:
         - name: Install Android build tools
           uses: android-actions/setup-android@v3
           with:
+            cmdline-tools-version: 8512546
             packages: |
-              tools platform-tools
+              platform-tools
               platforms;android-30
               build-tools;30.0.3
 
         - name: Check Android SDK setup
           run: |
-#            echo y | sdkmanager --licenses
             sdkmanager --list --verbose
 
         - name: Setup
