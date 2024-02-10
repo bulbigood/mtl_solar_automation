@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build, Test and Release
+    name: Build mobile wallet (artifacts)
     runs-on: ubuntu-latest
 
     steps:
@@ -72,13 +72,16 @@ jobs:
             npm run install:android
             npm run build:android
 
+        - name: Move file to workspace root
+          if: matrix.platform == 'android'
+          run: mv ./**/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk ./app-debug.apk
+
         - name: Upload build artifact
           if: matrix.platform == 'android'
           uses: actions/upload-artifact@v2
           with:
             name: app-debug.apk
-            # path: mtl_solar/mtl_solar/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk
-            path: ./**/android/app/build/outputs/apk/debug/app-debug.apk
+            path: ./app-debug.apk
 
         - name: Build (iOS)
           if: matrix.platform == 'ios'
@@ -88,9 +91,9 @@ jobs:
             npm run install:ios
             npm run build:ios
 
-        - name: Change working directory
+        - name: Move file to workspace root
           if: matrix.platform == 'ios'
-          run: cd ./**/ios/build/emulator/
+          run: mv ./**/ios/build/emulator/Solar.app ./Solar.app
 
         - name: Upload build artifact
           if: matrix.platform == 'ios'
