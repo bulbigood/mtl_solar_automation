@@ -73,11 +73,8 @@ jobs:
             npm run install:android
             npm run build:android
 
-        - name: Move artifacts to workspace root
-          run: mv /Users/runner/work/mtl_solar/mtl_solar/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk ./app-debug.apk
-
         - name: Upload artifacts
           uses: actions/upload-artifact@v2
           with:
             name: app-debug.apk
-            path: ./app-debug.apk
+            path: ./platforms/android/app/build/outputs/apk/debug/app-debug.apk
