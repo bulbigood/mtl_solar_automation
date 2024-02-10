@@ -64,19 +64,19 @@ jobs:
         - name: Install project
           run: |
             npm install
+            npm run prebuild:electron
 
-        - name: Build project (Android)
+        - name: Build project artifacts (Android)
           run: |
             cd cordova
-            ls -al
             npm install
             npm run install:android
             npm run build:android
 
-        - name: Move file to workspace root
+        - name: Move artifacts to workspace root
           run: mv /Users/runner/work/mtl_solar/mtl_solar/cordova/platforms/android/app/build/outputs/apk/debug/app-debug.apk ./app-debug.apk
 
-        - name: Upload build artifact (Android)
+        - name: Upload artifacts
           uses: actions/upload-artifact@v2
           with:
             name: app-debug.apk
