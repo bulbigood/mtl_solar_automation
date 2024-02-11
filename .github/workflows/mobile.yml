@@ -14,27 +14,23 @@ jobs:
           with:
             node-version: 20
 
-        - name: Setup
+        - name: Install project
           run: |
             npm install
             npm run prebuild:electron
-            cd cordova
-            npm install
 
-        - name: Build (iOS)
+        - name: Build project artifacts (iOS)
           run: |
             cd cordova
+            npm install
             npm run install:ios
             npm run build:ios
 
-        - name: Move file to workspace root
-          run: mv /Users/runner/work/mtl_solar/mtl_solar/cordova/platforms/ios/build/emulator/Solar.app ./Solar.app
-
-        - name: Upload build artifact
+        - name: Upload artifacts
           uses: actions/upload-artifact@v2
           with:
             name: Solar.app
-            path: ./Solar.app
+            path: ./platforms/ios/build/emulator/Solar.app
 
   build-android:
       runs-on: macos-latest
